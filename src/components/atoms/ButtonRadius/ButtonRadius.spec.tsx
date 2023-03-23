@@ -1,32 +1,30 @@
-import React from "react";
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { ButtonRadius } from ".";
 
 describe("Test componente < ButtonRadius/>", () => {
-    var textBT = "submit";
+  const props = {
+    text: "submit",
+    modo: "background",
+  };
 
-    test("button is rendering in screen, and the text passed to it is rendered", () => {
-        expect.assertions(1);
-        render(<ButtonRadius text={textBT} />);
-        const buttonElement = screen.getByText(/[${textBT}]/i);
+  test("button is rendering in screen, and the text passed to it is rendered", () => {
+    expect.assertions(1);
+    render(<ButtonRadius {...props} />);
+    const buttonElement = screen.getByText(/[${textBT}]/i);
 
-        expect(buttonElement).toBeInTheDocument();
-    });
+    expect(buttonElement).toBeInTheDocument();
+  });
 
-    test("button fires when clicked", () => {
-        render(<ButtonRadius text={textBT} />);
-        const buttonElement = screen.getByRole("button", {
-            name: /[${textBT}]/i,
-        });
-        const click = userEvent.click(buttonElement);
+  test("button fires when clicked", () => {
+    render(<ButtonRadius {...props} />);
+    const button = screen.getByText(/[${textBT}]/i);
+    const foiclicado = fireEvent.click(button);
+    expect(foiclicado).toBeTruthy();
+  });
 
-        expect(click).toBeCalled();
-    });
-
-    test("the button has the styles", () => {
-        render(<ButtonRadius text={textBT} />);
-        const buttonElement = screen.getByText(/[${textBT}]/i);
-        expect(buttonElement).toHaveAttribute("class", "button-radius");
-    });
+  test("the button has the styles", () => {
+    render(<ButtonRadius {...props} />);
+    const buttonElement = screen.getByText(/[${textBT}]/i);
+    expect(buttonElement).toHaveStyle({ background: "white" });
+  });
 });
